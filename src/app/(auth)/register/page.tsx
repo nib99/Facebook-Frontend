@@ -34,7 +34,6 @@ export default function RegisterPage() {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    // Validation
     if (Object.values(formData).some(val => !val)) {
       toast.error('Please fill in all fields');
       return;
@@ -44,7 +43,8 @@ export default function RegisterPage() {
       toast.error('Passwords do not match');
       return;
     }
-if (formData.password.length < 6) {
+
+    if (formData.password.length < 6) {
       toast.error('Password must be at least 6 characters');
       return;
     }
@@ -116,7 +116,6 @@ if (formData.password.length < 6) {
                 leftIcon={<Mail className="w-5 h-5" />}
                 required
               />
-
               <Input
                 label="Username"
                 type="text"
@@ -139,7 +138,8 @@ if (formData.password.length < 6) {
               leftIcon={<Calendar className="w-5 h-5" />}
               required
             />
-{/* Password Fields */}
+
+            {/* Password Fields */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <Input
                 label="Password"
@@ -151,7 +151,6 @@ if (formData.password.length < 6) {
                 leftIcon={<Lock className="w-5 h-5" />}
                 required
               />
-
               <Input
                 label="Confirm Password"
                 type="password"
@@ -164,12 +163,7 @@ if (formData.password.length < 6) {
               />
             </div>
 
-            <Button
-              type="submit"
-              fullWidth
-              isLoading={isLoading}
-              size="lg"
-            >
+            <Button type="submit" fullWidth isLoading={isLoading} size="lg">
               Create Account
             </Button>
           </form>
@@ -186,6 +180,7 @@ if (formData.password.length < 6) {
             </p>
           </div>
         </div>
+
         {/* Footer */}
         <p className="text-center text-primary-100 text-sm mt-8">
           © 2024 Facebook Pro. All rights reserved.
@@ -194,5 +189,3 @@ if (formData.password.length < 6) {
     </div>
   );
 }
-
-
