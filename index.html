@@ -1,0 +1,2788 @@
+<!doctype html>
+<html lang="en">
+ <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FaceBook Pro - Social Network Platform</title>
+  <script src="/_sdk/data_sdk.js"></script>
+  <script src="/_sdk/element_sdk.js"></script>
+  <style>
+        body {
+            box-sizing: border-box;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        html, body {
+            height: 100%;
+            width: 100%;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Helvetica, Arial, sans-serif;
+            background: #f0f2f5;
+            color: #050505;
+        }
+        
+        .app-wrapper {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        
+        /* Top Navigation Bar */
+        .top-nav {
+            background: white;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+            padding: 0.5rem 1rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .top-nav-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        
+        .logo-section {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+        
+        .logo {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #1877f2 0%, #0c5ecf 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 1.5rem;
+        }
+        
+        .platform-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1877f2;
+        }
+        
+        .search-bar {
+            flex: 1;
+            max-width: 500px;
+        }
+        
+        .search-input {
+            width: 100%;
+            padding: 0.625rem 1rem;
+            border: none;
+            background: #f0f2f5;
+            border-radius: 50px;
+            font-size: 0.9375rem;
+            outline: none;
+        }
+        
+        .search-input:focus {
+            background: #e4e6eb;
+        }
+        
+        .nav-main-links {
+            display: flex;
+            gap: 0.25rem;
+            flex: 1;
+            justify-content: center;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        
+        .nav-main-links::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .nav-link {
+            padding: 0.625rem 1rem;
+            border-radius: 8px;
+            background: transparent;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-weight: 600;
+            color: #65676b;
+            font-size: 0.9375rem;
+            white-space: nowrap;
+            border-bottom: 3px solid transparent;
+        }
+        
+        .nav-link:hover {
+            background: #f0f2f5;
+        }
+        
+        .nav-link.active {
+            color: #1877f2;
+            border-bottom-color: #1877f2;
+        }
+        
+        .nav-link-icon {
+            font-size: 1.25rem;
+        }
+        
+        .nav-link-text {
+            display: inline;
+        }
+        
+        .nav-icons {
+            display: flex;
+            gap: 0.5rem;
+            margin-left: auto;
+        }
+        
+        .nav-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            position: relative;
+            font-size: 1.25rem;
+            flex-shrink: 0;
+        }
+        
+        .nav-icon:hover {
+            background: #e4e6eb;
+        }
+        
+        .nav-icon.active {
+            background: #e7f3ff;
+            color: #1877f2;
+        }
+        
+        .notification-dot {
+            position: absolute;
+            top: 4px;
+            right: 4px;
+            width: 18px;
+            height: 18px;
+            background: #e41e3f;
+            border: 2px solid white;
+            border-radius: 50%;
+            font-size: 0.625rem;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 1rem;
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+        
+        /* Main Layout */
+        .main-layout {
+            flex: 1;
+            display: flex;
+            overflow: hidden;
+        }
+        
+        /* Main Content */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 1.5rem;
+            background: #f0f2f5;
+        }
+        
+        .content-container {
+            max-width: 680px;
+            margin: 0 auto;
+        }
+        
+        /* Right Sidebar */
+        .right-sidebar {
+            width: 320px;
+            background: white;
+            overflow-y: auto;
+            padding: 1rem;
+            border-left: 1px solid #e4e6eb;
+        }
+        
+        /* Stories Section */
+        .stories-section {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .stories-container {
+            display: flex;
+            gap: 0.5rem;
+            overflow-x: auto;
+            padding-bottom: 0.5rem;
+        }
+        
+        .story-card {
+            min-width: 110px;
+            height: 190px;
+            border-radius: 10px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            position: relative;
+            cursor: pointer;
+            overflow: hidden;
+            transition: transform 0.2s;
+        }
+        
+        .story-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .story-card.create-story {
+            background: white;
+            border: 2px dashed #e4e6eb;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+        }
+        
+        .story-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: white;
+            border: 3px solid #1877f2;
+            position: absolute;
+            top: 10px;
+            left: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+        
+        .story-username {
+            position: absolute;
+            bottom: 10px;
+            left: 10px;
+            right: 10px;
+            color: white;
+            font-size: 0.8125rem;
+            font-weight: 600;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        
+        /* Create Post Card */
+        .create-post-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .create-post-header {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .create-post-input {
+            flex: 1;
+            padding: 0.75rem 1rem;
+            border: none;
+            background: #f0f2f5;
+            border-radius: 50px;
+            font-size: 1rem;
+            font-family: inherit;
+            cursor: pointer;
+            outline: none;
+        }
+        
+        .post-options {
+            display: flex;
+            gap: 0.5rem;
+            padding-top: 0.75rem;
+            border-top: 1px solid #e4e6eb;
+            flex-wrap: wrap;
+        }
+        
+        .post-option {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-size: 0.9375rem;
+            font-weight: 600;
+            color: #65676b;
+            min-width: 100px;
+        }
+        
+        .post-option:hover {
+            background: #f0f2f5;
+        }
+        
+        .post-option-icon {
+            font-size: 1.5rem;
+        }
+        
+        /* Post Card */
+        .post-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
+        
+        .post-header {
+            display: flex;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+        }
+        
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            min-width: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+        }
+        
+        .post-info {
+            flex: 1;
+        }
+        
+        .post-username {
+            font-weight: 600;
+            font-size: 0.9375rem;
+            color: #050505;
+            margin-bottom: 0.125rem;
+        }
+        
+        .post-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            font-size: 0.8125rem;
+            color: #65676b;
+        }
+        
+        .post-feeling {
+            font-weight: 400;
+        }
+        
+        .post-more {
+            cursor: pointer;
+            padding: 0.5rem;
+            border-radius: 50%;
+            transition: background 0.2s;
+        }
+        
+        .post-more:hover {
+            background: #f0f2f5;
+        }
+        
+        .post-content {
+            margin-bottom: 1rem;
+            font-size: 0.9375rem;
+            line-height: 1.5;
+            white-space: pre-wrap;
+            word-wrap: break-word;
+        }
+        
+        .hashtag {
+            color: #1877f2;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .mention {
+            color: #1877f2;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        
+        .post-media {
+            margin-bottom: 1rem;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .post-emoji-media {
+            font-size: 5rem;
+            text-align: center;
+            padding: 2rem;
+            background: #f0f2f5;
+        }
+        
+        .post-stats {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.75rem 0;
+            border-bottom: 1px solid #e4e6eb;
+            font-size: 0.9375rem;
+            color: #65676b;
+        }
+        
+        .post-reactions {
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+            cursor: pointer;
+        }
+        
+        .reaction-icons {
+            display: flex;
+            margin-right: 0.25rem;
+        }
+        
+        .reaction-icon {
+            width: 18px;
+            height: 18px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.75rem;
+            margin-left: -4px;
+            background: white;
+        }
+        
+        .reaction-icon:first-child {
+            margin-left: 0;
+        }
+        
+        .post-counts {
+            display: flex;
+            gap: 1rem;
+            cursor: pointer;
+        }
+        
+        .post-actions {
+            display: flex;
+            padding: 0.25rem 0;
+            border-bottom: 1px solid #e4e6eb;
+        }
+        
+        .post-action {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            padding: 0.5rem;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background 0.2s;
+            font-weight: 600;
+            color: #65676b;
+            font-size: 0.9375rem;
+        }
+        
+        .post-action:hover {
+            background: #f0f2f5;
+        }
+        
+        .post-action.reacted {
+            color: #1877f2;
+        }
+        
+        .post-action.liked {
+            color: #e41e3f;
+        }
+        
+        /* Reaction Picker */
+        .reaction-picker {
+            position: absolute;
+            bottom: 100%;
+            left: 0;
+            background: white;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.15);
+            border-radius: 50px;
+            padding: 0.5rem;
+            display: none;
+            gap: 0.25rem;
+            z-index: 10;
+        }
+        
+        .reaction-picker.show {
+            display: flex;
+        }
+        
+        .reaction-btn {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: transform 0.2s;
+            font-size: 1.5rem;
+        }
+        
+        .reaction-btn:hover {
+            transform: scale(1.3);
+        }
+        
+        /* Comments Section */
+        .comments-section {
+            padding-top: 0.75rem;
+        }
+        
+        .comment {
+            display: flex;
+            gap: 0.5rem;
+            margin-bottom: 0.75rem;
+        }
+        
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            min-width: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            font-size: 0.875rem;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-bubble {
+            background: #f0f2f5;
+            padding: 0.5rem 0.75rem;
+            border-radius: 18px;
+            display: inline-block;
+            max-width: 100%;
+        }
+        
+        .comment-username {
+            font-weight: 600;
+            font-size: 0.8125rem;
+            margin-bottom: 0.125rem;
+        }
+        
+        .comment-text {
+            font-size: 0.9375rem;
+            word-wrap: break-word;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 1rem;
+            margin-top: 0.25rem;
+            margin-left: 0.75rem;
+            font-size: 0.75rem;
+            color: #65676b;
+            font-weight: 600;
+        }
+        
+        .comment-action {
+            cursor: pointer;
+        }
+        
+        .comment-action:hover {
+            text-decoration: underline;
+        }
+        
+        .comment-input-area {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+        }
+        
+        .comment-input {
+            flex: 1;
+            padding: 0.5rem 0.75rem;
+            border: none;
+            background: #f0f2f5;
+            border-radius: 18px;
+            font-size: 0.9375rem;
+            font-family: inherit;
+            outline: none;
+        }
+        
+        .comment-input:focus {
+            background: #e4e6eb;
+        }
+        
+        /* Friends List */
+        .friends-list {
+            display: flex;
+            flex-direction: column;
+            gap: 0.75rem;
+        }
+        
+        .friend-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .friend-item:hover {
+            background: #f0f2f5;
+        }
+        
+        .friend-avatar {
+            width: 36px;
+            height: 36px;
+            min-width: 36px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 700;
+            position: relative;
+        }
+        
+        .online-dot {
+            position: absolute;
+            bottom: 0;
+            right: 0;
+            width: 12px;
+            height: 12px;
+            background: #31a24c;
+            border: 2px solid white;
+            border-radius: 50%;
+        }
+        
+        .friend-info {
+            flex: 1;
+        }
+        
+        .friend-name {
+            font-weight: 600;
+            font-size: 0.9375rem;
+            color: #050505;
+        }
+        
+        .friend-status {
+            font-size: 0.75rem;
+            color: #65676b;
+        }
+        
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.6);
+            display: none;
+            align-items: center;
+            justify-content: center;
+            z-index: 2000;
+        }
+        
+        .modal-overlay.show {
+            display: flex;
+        }
+        
+        .modal-content {
+            background: white;
+            border-radius: 8px;
+            max-width: 500px;
+            width: 90%;
+            max-height: 90%;
+            overflow-y: auto;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+        }
+        
+        .modal-header {
+            padding: 1rem;
+            border-bottom: 1px solid #e4e6eb;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        
+        .modal-title {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #050505;
+        }
+        
+        .modal-close {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            background: #f0f2f5;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #65676b;
+        }
+        
+        .modal-close:hover {
+            background: #e4e6eb;
+        }
+        
+        .modal-body {
+            padding: 1rem;
+        }
+        
+        .form-group {
+            margin-bottom: 1rem;
+        }
+        
+        .form-label {
+            display: block;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+            color: #050505;
+            font-size: 0.9375rem;
+        }
+        
+        .form-input, .form-textarea, .form-select {
+            width: 100%;
+            padding: 0.75rem;
+            border: 1px solid #ccd0d5;
+            border-radius: 6px;
+            font-size: 0.9375rem;
+            font-family: inherit;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+        
+        .form-input:focus, .form-textarea:focus, .form-select:focus {
+            border-color: #1877f2;
+        }
+        
+        .form-textarea {
+            resize: vertical;
+            min-height: 100px;
+        }
+        
+        .emoji-grid {
+            display: grid;
+            grid-template-columns: repeat(6, 1fr);
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .emoji-option {
+            width: 100%;
+            aspect-ratio: 1;
+            border: 2px solid #e4e6eb;
+            border-radius: 8px;
+            background: white;
+            font-size: 2rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .emoji-option:hover {
+            transform: scale(1.1);
+            border-color: #1877f2;
+        }
+        
+        .emoji-option.selected {
+            border-color: #1877f2;
+            background: #e7f3ff;
+        }
+        
+        .modal-footer {
+            padding: 1rem;
+            border-top: 1px solid #e4e6eb;
+            display: flex;
+            justify-content: flex-end;
+            gap: 0.5rem;
+        }
+        
+        .btn {
+            padding: 0.5rem 1.5rem;
+            border: none;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.9375rem;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .btn-primary {
+            background: #1877f2;
+            color: white;
+        }
+        
+        .btn-primary:hover:not(:disabled) {
+            background: #166fe5;
+        }
+        
+        .btn-primary:disabled {
+            background: #e4e6eb;
+            color: #bcc0c4;
+            cursor: not-allowed;
+        }
+        
+        .btn-secondary {
+            background: #e4e6eb;
+            color: #050505;
+        }
+        
+        .btn-secondary:hover {
+            background: #d8dadf;
+        }
+        
+        /* Login Screen */
+        .login-screen {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            padding: 2rem;
+        }
+        
+        .login-card {
+            background: white;
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 12px 28px rgba(0,0,0,0.25);
+            max-width: 400px;
+            width: 100%;
+        }
+        
+        .login-logo {
+            text-align: center;
+            margin-bottom: 2rem;
+        }
+        
+        .login-logo-icon {
+            width: 80px;
+            height: 80px;
+            margin: 0 auto 1rem;
+            background: linear-gradient(135deg, #1877f2 0%, #0c5ecf 100%);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 900;
+            font-size: 3rem;
+        }
+        
+        .login-title {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #1877f2;
+            margin-bottom: 0.5rem;
+        }
+        
+        .login-tagline {
+            color: #65676b;
+            font-size: 1rem;
+        }
+        
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: #65676b;
+        }
+        
+        .empty-state-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+        
+        .empty-state-text {
+            font-size: 1.125rem;
+            font-weight: 600;
+        }
+        
+        .section-header {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #65676b;
+            margin-bottom: 0.75rem;
+        }
+        
+        .toast {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: white;
+            padding: 1rem 1.5rem;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 3000;
+            animation: slideIn 0.3s ease;
+        }
+        
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        
+        .toast-icon {
+            font-size: 1.5rem;
+        }
+        
+        .toast-message {
+            font-weight: 600;
+            color: #050505;
+        }
+        
+        .settings-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem;
+            background: #f0f2f5;
+            border-radius: 8px;
+            margin-bottom: 0.75rem;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 51px;
+            height: 31px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .toggle-slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: 0.3s;
+            border-radius: 34px;
+        }
+        
+        .toggle-slider:before {
+            position: absolute;
+            content: "";
+            height: 23px;
+            width: 23px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: 0.3s;
+            border-radius: 50%;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider {
+            background-color: #1877f2;
+        }
+        
+        .toggle-switch input:checked + .toggle-slider:before {
+            transform: translateX(20px);
+        }
+        
+        .group-card {
+            background: #f0f2f5;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .group-card:hover {
+            background: #e4e6eb;
+        }
+        
+        .group-icon {
+            width: 60px;
+            height: 60px;
+            min-width: 60px;
+            border-radius: 8px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .group-info {
+            flex: 1;
+        }
+        
+        .group-name {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.25rem;
+        }
+        
+        .group-members {
+            font-size: 0.875rem;
+            color: #65676b;
+        }
+        
+        .listing-card {
+            background: #f0f2f5;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            cursor: pointer;
+            transition: transform 0.2s;
+        }
+        
+        .listing-card:hover {
+            transform: translateY(-2px);
+        }
+        
+        .listing-image {
+            width: 100%;
+            height: 200px;
+            background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+        }
+        
+        .listing-info {
+            padding: 1rem;
+            background: white;
+        }
+        
+        .listing-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .listing-price {
+            font-size: 1.25rem;
+            font-weight: 700;
+            color: #1877f2;
+            margin-bottom: 0.25rem;
+        }
+        
+        .listing-location {
+            font-size: 0.875rem;
+            color: #65676b;
+        }
+        
+        .video-card {
+            background: white;
+            border-radius: 8px;
+            overflow: hidden;
+            margin-bottom: 1rem;
+            cursor: pointer;
+        }
+        
+        .video-thumbnail {
+            width: 100%;
+            height: 300px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 5rem;
+            position: relative;
+        }
+        
+        .play-overlay {
+            position: absolute;
+            width: 60px;
+            height: 60px;
+            background: rgba(255,255,255,0.9);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+        }
+        
+        .video-info {
+            padding: 1rem;
+        }
+        
+        .video-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .video-meta {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.875rem;
+            color: #65676b;
+        }
+        
+        .event-card {
+            background: white;
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #1877f2;
+            display: flex;
+            gap: 1rem;
+            cursor: pointer;
+            transition: background 0.2s;
+        }
+        
+        .event-card:hover {
+            background: #f0f2f5;
+        }
+        
+        .event-date {
+            width: 60px;
+            min-width: 60px;
+            height: 60px;
+            background: #1877f2;
+            border-radius: 8px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            color: white;
+        }
+        
+        .event-month {
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+        
+        .event-day {
+            font-size: 1.5rem;
+            font-weight: 700;
+        }
+        
+        .event-details {
+            flex: 1;
+        }
+        
+        .event-title {
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 0.5rem;
+        }
+        
+        .event-info {
+            display: flex;
+            flex-direction: column;
+            gap: 0.25rem;
+            font-size: 0.875rem;
+            color: #65676b;
+        }
+        
+        @media (max-width: 1024px) {
+            .right-sidebar {
+                display: none;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .top-nav {
+                padding: 0.5rem;
+            }
+            
+            .search-bar {
+                display: none;
+            }
+            
+            .platform-name {
+                font-size: 1.125rem;
+            }
+            
+            .nav-link-text {
+                display: none;
+            }
+            
+            .nav-link {
+                padding: 0.5rem 0.75rem;
+            }
+            
+            .main-content {
+                padding: 1rem;
+            }
+            
+            .content-container {
+                max-width: 100%;
+            }
+            
+            .nav-main-links {
+                gap: 0.125rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .logo-section .platform-name {
+                display: none;
+            }
+            
+            .top-nav {
+                padding: 0.375rem 0.5rem;
+            }
+            
+            .main-content {
+                padding: 0.75rem 0.5rem;
+            }
+            
+            .post-card, .create-post-card, .stories-section {
+                border-radius: 0;
+                margin-left: -0.5rem;
+                margin-right: -0.5rem;
+            }
+            
+            .nav-link {
+                padding: 0.5rem;
+            }
+        }
+    </style>
+  <style>@view-transition { navigation: auto; }</style>
+  <script src="https://cdn.tailwindcss.com" type="text/javascript"></script>
+ </head>
+ <body>
+  <div class="app-wrapper"><!-- Login Screen -->
+   <div id="login-screen" class="login-screen">
+    <div class="login-card">
+     <div class="login-logo">
+      <div class="login-logo-icon">
+       f
+      </div>
+      <h1 class="login-title" id="login-platform-name">FaceBook Pro</h1>
+      <p class="login-tagline" id="login-tagline">Connect with friends and the world</p>
+     </div>
+     <form class="login-form" id="login-form">
+      <div class="form-group"><label class="form-label" for="username-input">Username</label> <input type="text" id="username-input" class="form-input" placeholder="Enter your username" required minlength="3">
+      </div><button type="submit" class="btn btn-primary" style="width: 100%; padding: 0.75rem;">Join Now</button>
+     </form>
+    </div>
+   </div><!-- Main App -->
+   <div id="main-app" class="hidden"><!-- Top Navigation -->
+    <nav class="top-nav">
+     <div class="top-nav-row">
+      <div class="logo-section">
+       <div class="logo">
+        f
+       </div><span class="platform-name" id="top-platform-name">FaceBook Pro</span>
+      </div>
+      <div class="search-bar"><input type="text" class="search-input" id="search-input" placeholder="Search FaceBook Pro">
+      </div>
+      <div class="nav-icons">
+       <div class="nav-icon" data-view="messenger" title="Messenger"><span>💬</span> <span class="notification-dot hidden" id="messages-badge">0</span>
+       </div>
+       <div class="nav-icon" data-view="notifications" title="Notifications"><span>🔔</span> <span class="notification-dot hidden" id="notifications-badge">0</span>
+       </div>
+      </div>
+      <div class="user-avatar" id="user-menu-btn"><span id="user-avatar-text">U</span>
+      </div>
+     </div>
+     <div class="nav-main-links">
+      <div class="nav-link active" data-view="home"><span class="nav-link-icon">🏠</span> <span class="nav-link-text">Home</span>
+      </div>
+      <div class="nav-link" data-view="profile"><span class="nav-link-icon">👤</span> <span class="nav-link-text">Profile</span>
+      </div>
+      <div class="nav-link" data-view="friends"><span class="nav-link-icon">👥</span> <span class="nav-link-text">Friends</span>
+      </div>
+      <div class="nav-link" data-view="groups"><span class="nav-link-icon">👨‍👩‍👧‍👦</span> <span class="nav-link-text">Groups</span>
+      </div>
+      <div class="nav-link" data-view="marketplace"><span class="nav-link-icon">🏪</span> <span class="nav-link-text">Marketplace</span>
+      </div>
+      <div class="nav-link" data-view="watch"><span class="nav-link-icon">📺</span> <span class="nav-link-text">Watch</span>
+      </div>
+      <div class="nav-link" data-view="events"><span class="nav-link-icon">📅</span> <span class="nav-link-text">Events</span>
+      </div>
+      <div class="nav-link" data-view="saved"><span class="nav-link-icon">🔖</span> <span class="nav-link-text">Saved</span>
+      </div>
+      <div class="nav-link" data-view="settings"><span class="nav-link-icon">⚙️</span> <span class="nav-link-text">Settings</span>
+      </div>
+     </div>
+    </nav><!-- Main Layout -->
+    <div class="main-layout"><!-- Main Content -->
+     <main class="main-content">
+      <div class="content-container"><!-- Home View -->
+       <div id="home-view"><!-- Stories -->
+        <div class="stories-section">
+         <div class="stories-container" id="stories-container">
+          <div class="story-card create-story" id="create-story-btn"><span style="font-size: 3rem;">➕</span> <span style="font-weight: 600; font-size: 0.875rem; color: #050505;">Create Story</span>
+          </div>
+         </div>
+        </div><!-- Create Post -->
+        <div class="create-post-card">
+         <div class="create-post-header">
+          <div class="user-avatar" id="create-post-avatar">
+           U
+          </div><input type="text" class="create-post-input" id="create-post-trigger" placeholder="What's on your mind?" readonly>
+         </div>
+         <div class="post-options">
+          <div class="post-option" id="photo-video-btn"><span class="post-option-icon" style="color: #45bd62;">📸</span> <span>Photo/Video</span>
+          </div>
+          <div class="post-option" id="feeling-btn"><span class="post-option-icon" style="color: #f7b928;">😊</span> <span>Feeling</span>
+          </div>
+          <div class="post-option" id="checkin-btn"><span class="post-option-icon" style="color: #f5533d;">📍</span> <span>Check in</span>
+          </div>
+         </div>
+        </div><!-- Feed -->
+        <div id="feed-container"></div>
+       </div><!-- Other Views -->
+       <div id="friends-view" class="hidden">
+        <div class="post-card">
+         <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Friends</h2>
+         <div id="friends-list" class="friends-list"></div>
+        </div>
+       </div>
+       <div id="profile-view" class="hidden">
+        <div class="post-card">
+         <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">My Profile</h2>
+         <div style="display: flex; align-items: center; gap: 1.5rem; margin-bottom: 1.5rem;">
+          <div class="user-avatar" style="width: 100px; height: 100px; font-size: 3rem;" id="profile-avatar">
+           U
+          </div>
+          <div>
+           <h3 style="font-size: 2rem; font-weight: 700; margin-bottom: 0.5rem;" id="profile-username">User</h3>
+           <p style="color: #65676b;" id="profile-bio">Bio goes here</p>
+          </div>
+         </div>
+         <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 1rem; padding-top: 1rem; border-top: 1px solid #e4e6eb;">
+          <div style="text-align: center; padding: 1rem; background: #f0f2f5; border-radius: 8px;">
+           <div style="font-size: 2rem; margin-bottom: 0.5rem;">
+            📝
+           </div>
+           <div style="font-weight: 700; font-size: 1.5rem;" id="profile-posts-count">
+            0
+           </div>
+           <div style="color: #65676b; font-size: 0.875rem;">
+            Posts
+           </div>
+          </div>
+          <div style="text-align: center; padding: 1rem; background: #f0f2f5; border-radius: 8px;">
+           <div style="font-size: 2rem; margin-bottom: 0.5rem;">
+            👥
+           </div>
+           <div style="font-weight: 700; font-size: 1.5rem;" id="profile-friends-count">
+            0
+           </div>
+           <div style="color: #65676b; font-size: 0.875rem;">
+            Friends
+           </div>
+          </div>
+          <div style="text-align: center; padding: 1rem; background: #f0f2f5; border-radius: 8px;">
+           <div style="font-size: 2rem; margin-bottom: 0.5rem;">
+            📸
+           </div>
+           <div style="font-weight: 700; font-size: 1.5rem;" id="profile-stories-count">
+            0
+           </div>
+           <div style="color: #65676b; font-size: 0.875rem;">
+            Stories
+           </div>
+          </div>
+         </div>
+        </div>
+       </div>
+       <div id="messenger-view" class="hidden">
+        <div class="empty-state">
+         <div class="empty-state-icon">
+          💬
+         </div>
+         <div class="empty-state-text">
+          Messenger feature coming soon!
+         </div>
+         <p style="margin-top: 0.5rem; font-size: 0.875rem;">Chat with friends in real-time</p>
+        </div>
+       </div>
+       <div id="notifications-view" class="hidden">
+        <div class="post-card">
+         <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1rem;">Notifications</h2>
+         <div id="notifications-list"></div>
+        </div>
+       </div>
+       <div id="groups-view" class="hidden">
+        <div class="post-card">
+         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700;">Your Groups</h2><button class="btn btn-primary" id="create-group-btn">+ Create Group</button>
+         </div>
+         <div id="groups-list"></div>
+        </div>
+       </div>
+       <div id="marketplace-view" class="hidden">
+        <div class="post-card">
+         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700;">Marketplace</h2><button class="btn btn-primary" id="create-listing-btn">+ Sell Something</button>
+         </div>
+         <div class="form-group" style="margin-bottom: 1.5rem;"><input type="text" class="form-input" id="marketplace-search" placeholder="Search marketplace...">
+         </div>
+         <div id="marketplace-list"></div>
+        </div>
+       </div>
+       <div id="watch-view" class="hidden">
+        <div class="post-card">
+         <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Watch</h2>
+         <div id="watch-list"></div>
+        </div>
+       </div>
+       <div id="events-view" class="hidden">
+        <div class="post-card">
+         <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+          <h2 style="font-size: 1.5rem; font-weight: 700;">Events</h2><button class="btn btn-primary" id="create-event-btn">+ Create Event</button>
+         </div>
+         <div id="events-list"></div>
+        </div>
+       </div>
+       <div id="saved-view" class="hidden">
+        <div class="post-card">
+         <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Saved Posts</h2>
+         <div id="saved-list"></div>
+        </div>
+       </div>
+       <div id="settings-view" class="hidden">
+        <div class="post-card">
+         <h2 style="font-size: 1.5rem; font-weight: 700; margin-bottom: 1.5rem;">Settings</h2>
+         <div style="display: flex; flex-direction: column; gap: 1rem;">
+          <div class="settings-section">
+           <h3 style="font-weight: 600; margin-bottom: 1rem; font-size: 1.125rem;">Account Settings</h3>
+           <div class="settings-item">
+            <div>
+             <div style="font-weight: 600;">
+              Username
+             </div>
+             <div style="color: #65676b; font-size: 0.875rem;" id="settings-username">
+              User
+             </div>
+            </div><button class="btn btn-secondary" id="edit-username-btn">Edit</button>
+           </div>
+           <div class="settings-item">
+            <div>
+             <div style="font-weight: 600;">
+              Email
+             </div>
+             <div style="color: #65676b; font-size: 0.875rem;">
+              user@example.com
+             </div>
+            </div><button class="btn btn-secondary">Edit</button>
+           </div>
+          </div>
+          <div class="sidebar-divider"></div>
+          <div class="settings-section">
+           <h3 style="font-weight: 600; margin-bottom: 1rem; font-size: 1.125rem;">Privacy</h3>
+           <div class="settings-item">
+            <div>
+             <div style="font-weight: 600;">
+              Profile Visibility
+             </div>
+             <div style="color: #65676b; font-size: 0.875rem;">
+              Who can see your profile
+             </div>
+            </div><select class="form-select" style="width: auto;"> <option>Public</option> <option>Friends</option> <option>Private</option> </select>
+           </div>
+           <div class="settings-item">
+            <div>
+             <div style="font-weight: 600;">
+              Post Privacy
+             </div>
+             <div style="color: #65676b; font-size: 0.875rem;">
+              Default post visibility
+             </div>
+            </div><select class="form-select" style="width: auto;"> <option>Public</option> <option selected>Friends</option> <option>Private</option> </select>
+           </div>
+          </div>
+          <div class="sidebar-divider"></div>
+          <div class="settings-section">
+           <h3 style="font-weight: 600; margin-bottom: 1rem; font-size: 1.125rem;">Notifications</h3>
+           <div class="settings-item">
+            <div>
+             <div style="font-weight: 600;">
+              Push Notifications
+             </div>
+             <div style="color: #65676b; font-size: 0.875rem;">
+              Get notified about activity
+             </div>
+            </div><label class="toggle-switch"> <input type="checkbox" checked> <span class="toggle-slider"></span> </label>
+           </div>
+           <div class="settings-item">
+            <div>
+             <div style="font-weight: 600;">
+              Email Notifications
+             </div>
+             <div style="color: #65676b; font-size: 0.875rem;">
+              Receive updates via email
+             </div>
+            </div><label class="toggle-switch"> <input type="checkbox"> <span class="toggle-slider"></span> </label>
+           </div>
+          </div>
+          <div class="sidebar-divider"></div><button class="btn btn-secondary" id="logout-btn" style="width: fit-content;">Log Out</button>
+         </div>
+        </div>
+       </div>
+      </div>
+     </main><!-- Right Sidebar -->
+     <aside class="right-sidebar">
+      <div class="section-header">
+       Contacts
+      </div>
+      <div class="friends-list" id="contacts-list"></div>
+     </aside>
+    </div>
+   </div><!-- Create Post Modal -->
+   <div class="modal-overlay" id="create-post-modal">
+    <div class="modal-content">
+     <div class="modal-header"><span class="modal-title">Create Post</span> <span class="modal-close" id="close-post-modal">✕</span>
+     </div>
+     <div class="modal-body">
+      <div class="form-group"><label class="form-label">What's on your mind?</label> <textarea class="form-textarea" id="post-content" placeholder="Share your thoughts..."></textarea>
+      </div>
+      <div class="form-group"><label class="form-label">Add to your post</label>
+       <div class="emoji-grid" id="emoji-selector"><button type="button" class="emoji-option" data-emoji="📸">📸</button> <button type="button" class="emoji-option" data-emoji="🎉">🎉</button> <button type="button" class="emoji-option" data-emoji="❤️">❤️</button> <button type="button" class="emoji-option" data-emoji="😊">😊</button> <button type="button" class="emoji-option" data-emoji="🌟">🌟</button> <button type="button" class="emoji-option" data-emoji="🔥">🔥</button> <button type="button" class="emoji-option" data-emoji="🎂">🎂</button> <button type="button" class="emoji-option" data-emoji="🌈">🌈</button> <button type="button" class="emoji-option" data-emoji="⚽">⚽</button> <button type="button" class="emoji-option" data-emoji="🎵">🎵</button> <button type="button" class="emoji-option" data-emoji="☕">☕</button> <button type="button" class="emoji-option" data-emoji="🍕">🍕</button>
+       </div>
+      </div>
+      <div class="form-group"><label class="form-label">Feeling/Activity</label> <select class="form-select" id="feeling-select"> <option value="">None</option> <option value="happy">😊 Happy</option> <option value="excited">🎉 Excited</option> <option value="blessed">🙏 Blessed</option> <option value="loved">❤️ Loved</option> <option value="grateful">🌟 Grateful</option> <option value="motivated">💪 Motivated</option> <option value="relaxed">😌 Relaxed</option> <option value="celebrating">🎊 Celebrating</option> </select>
+      </div>
+      <div class="form-group"><label class="form-label">Visibility</label> <select class="form-select" id="visibility-select"> <option value="public">🌍 Public</option> <option value="friends">👥 Friends</option> <option value="private">🔒 Only me</option> </select>
+      </div>
+     </div>
+     <div class="modal-footer"><button type="button" class="btn btn-secondary" id="cancel-post-btn">Cancel</button> <button type="button" class="btn btn-primary" id="publish-post-btn">Post</button>
+     </div>
+    </div>
+   </div><!-- Create Story Modal -->
+   <div class="modal-overlay" id="create-story-modal">
+    <div class="modal-content">
+     <div class="modal-header"><span class="modal-title">Create Story</span> <span class="modal-close" id="close-story-modal">✕</span>
+     </div>
+     <div class="modal-body">
+      <div class="form-group"><label class="form-label">Your Story</label> <textarea class="form-textarea" id="story-content" placeholder="Share your moment..." style="min-height: 80px;"></textarea>
+      </div>
+      <div class="form-group"><label class="form-label">Story Background</label>
+       <div class="emoji-grid"><button type="button" class="emoji-option" data-story-emoji="🌅">🌅</button> <button type="button" class="emoji-option" data-story-emoji="🎨">🎨</button> <button type="button" class="emoji-option" data-story-emoji="🌸">🌸</button> <button type="button" class="emoji-option" data-story-emoji="🌊">🌊</button> <button type="button" class="emoji-option" data-story-emoji="🌙">🌙</button> <button type="button" class="emoji-option" data-story-emoji="⭐">⭐</button>
+       </div>
+      </div>
+     </div>
+     <div class="modal-footer"><button type="button" class="btn btn-secondary" id="cancel-story-btn">Cancel</button> <button type="button" class="btn btn-primary" id="publish-story-btn">Share Story</button>
+     </div>
+    </div>
+   </div><!-- Create Group Modal -->
+   <div class="modal-overlay" id="create-group-modal">
+    <div class="modal-content">
+     <div class="modal-header"><span class="modal-title">Create Group</span> <span class="modal-close" id="close-group-modal">✕</span>
+     </div>
+     <div class="modal-body">
+      <div class="form-group"><label class="form-label" for="group-name-input">Group Name</label> <input type="text" id="group-name-input" class="form-input" placeholder="Enter group name" required>
+      </div>
+      <div class="form-group"><label class="form-label" for="group-desc-input">Description</label> <textarea class="form-textarea" id="group-desc-input" placeholder="What's your group about?" style="min-height: 100px;"></textarea>
+      </div>
+      <div class="form-group"><label class="form-label">Privacy</label> <select class="form-select" id="group-privacy"> <option value="public">🌍 Public</option> <option value="private">🔒 Private</option> </select>
+      </div>
+     </div>
+     <div class="modal-footer"><button type="button" class="btn btn-secondary" id="cancel-group-btn">Cancel</button> <button type="button" class="btn btn-primary" id="create-group-submit">Create</button>
+     </div>
+    </div>
+   </div><!-- Create Listing Modal -->
+   <div class="modal-overlay" id="create-listing-modal">
+    <div class="modal-content">
+     <div class="modal-header"><span class="modal-title">Create Listing</span> <span class="modal-close" id="close-listing-modal">✕</span>
+     </div>
+     <div class="modal-body">
+      <div class="form-group"><label class="form-label" for="listing-title-input">Title</label> <input type="text" id="listing-title-input" class="form-input" placeholder="What are you selling?" required>
+      </div>
+      <div class="form-group"><label class="form-label" for="listing-price-input">Price</label> <input type="number" id="listing-price-input" class="form-input" placeholder="0.00" min="0" step="0.01" required>
+      </div>
+      <div class="form-group"><label class="form-label" for="listing-desc-input">Description</label> <textarea class="form-textarea" id="listing-desc-input" placeholder="Describe your item..." style="min-height: 100px;"></textarea>
+      </div>
+      <div class="form-group"><label class="form-label" for="listing-location-input">Location</label> <input type="text" id="listing-location-input" class="form-input" placeholder="City, State">
+      </div>
+      <div class="form-group"><label class="form-label">Category</label> <select class="form-select" id="listing-category"> <option value="electronics">📱 Electronics</option> <option value="furniture">🛋️ Furniture</option> <option value="clothing">👕 Clothing</option> <option value="vehicles">🚗 Vehicles</option> <option value="other">📦 Other</option> </select>
+      </div>
+     </div>
+     <div class="modal-footer"><button type="button" class="btn btn-secondary" id="cancel-listing-btn">Cancel</button> <button type="button" class="btn btn-primary" id="create-listing-submit">List Item</button>
+     </div>
+    </div>
+   </div><!-- Create Event Modal -->
+   <div class="modal-overlay" id="create-event-modal">
+    <div class="modal-content">
+     <div class="modal-header"><span class="modal-title">Create Event</span> <span class="modal-close" id="close-event-modal">✕</span>
+     </div>
+     <div class="modal-body">
+      <div class="form-group"><label class="form-label" for="event-title-input">Event Name</label> <input type="text" id="event-title-input" class="form-input" placeholder="Give your event a name" required>
+      </div>
+      <div class="form-group"><label class="form-label" for="event-date-input">Date</label> <input type="date" id="event-date-input" class="form-input" required>
+      </div>
+      <div class="form-group"><label class="form-label" for="event-time-input">Time</label> <input type="time" id="event-time-input" class="form-input" required>
+      </div>
+      <div class="form-group"><label class="form-label" for="event-location-input">Location</label> <input type="text" id="event-location-input" class="form-input" placeholder="Where will it happen?">
+      </div>
+      <div class="form-group"><label class="form-label" for="event-desc-input">Description</label> <textarea class="form-textarea" id="event-desc-input" placeholder="Tell people more about the event..." style="min-height: 100px;"></textarea>
+      </div>
+     </div>
+     <div class="modal-footer"><button type="button" class="btn btn-secondary" id="cancel-event-btn">Cancel</button> <button type="button" class="btn btn-primary" id="create-event-submit">Create Event</button>
+     </div>
+    </div>
+   </div>
+  </div>
+  <script>
+        const defaultConfig = {
+            platform_name: "FaceBook Pro",
+            tagline: "Connect with friends and the world",
+            post_prompt: "What's on your mind?",
+            story_prompt: "Share your moment",
+            welcome_text: "Welcome back!"
+        };
+
+        let currentUser = null;
+        let currentView = 'home';
+        let allData = [];
+        let selectedPostEmoji = null;
+        let selectedStoryEmoji = null;
+
+        const REACTION_TYPES = {
+            like: '👍',
+            love: '❤️',
+            haha: '😂',
+            wow: '😮',
+            sad: '😢',
+            angry: '😠'
+        };
+
+        const dataHandler = {
+            onDataChanged(data) {
+                allData = data;
+                renderCurrentView();
+                updateNotificationBadges();
+            }
+        };
+
+        async function initializeApp() {
+            const initResult = await window.dataSdk.init(dataHandler);
+            if (!initResult.isOk) {
+                console.error("Failed to initialize Data SDK");
+            }
+
+            if (window.elementSdk) {
+                await window.elementSdk.init({
+                    defaultConfig,
+                    onConfigChange: async (config) => {
+                        const platformName = config.platform_name || defaultConfig.platform_name;
+                        const tagline = config.tagline || defaultConfig.tagline;
+                        const postPrompt = config.post_prompt || defaultConfig.post_prompt;
+
+                        document.getElementById('login-platform-name').textContent = platformName;
+                        document.getElementById('top-platform-name').textContent = platformName;
+                        document.getElementById('login-tagline').textContent = tagline;
+                        document.getElementById('create-post-trigger').placeholder = postPrompt;
+                        document.getElementById('post-content').placeholder = postPrompt;
+                    },
+                    mapToCapabilities: () => ({
+                        recolorables: [],
+                        borderables: [],
+                        fontEditable: undefined,
+                        fontSizeable: undefined
+                    }),
+                    mapToEditPanelValues: (config) => new Map([
+                        ["platform_name", config.platform_name || defaultConfig.platform_name],
+                        ["tagline", config.tagline || defaultConfig.tagline],
+                        ["post_prompt", config.post_prompt || defaultConfig.post_prompt],
+                        ["story_prompt", config.story_prompt || defaultConfig.story_prompt],
+                        ["welcome_text", config.welcome_text || defaultConfig.welcome_text]
+                    ])
+                });
+            }
+
+            setupEventListeners();
+        }
+
+        function setupEventListeners() {
+            // Login
+            document.getElementById('login-form').addEventListener('submit', handleLogin);
+
+            // Navigation
+            document.querySelectorAll('.nav-icon, .nav-link').forEach(item => {
+                item.addEventListener('click', function() {
+                    const view = this.dataset.view;
+                    if (view) switchView(view);
+                });
+            });
+
+            // Create Post Modal
+            document.getElementById('create-post-trigger').addEventListener('click', () => openModal('create-post-modal'));
+            document.getElementById('photo-video-btn').addEventListener('click', () => openModal('create-post-modal'));
+            document.getElementById('feeling-btn').addEventListener('click', () => openModal('create-post-modal'));
+            document.getElementById('checkin-btn').addEventListener('click', () => openModal('create-post-modal'));
+            document.getElementById('close-post-modal').addEventListener('click', () => closeModal('create-post-modal'));
+            document.getElementById('cancel-post-btn').addEventListener('click', () => closeModal('create-post-modal'));
+            document.getElementById('publish-post-btn').addEventListener('click', publishPost);
+
+            // Create Story Modal
+            document.getElementById('create-story-btn').addEventListener('click', () => openModal('create-story-modal'));
+            document.getElementById('close-story-modal').addEventListener('click', () => closeModal('create-story-modal'));
+            document.getElementById('cancel-story-btn').addEventListener('click', () => closeModal('create-story-modal'));
+            document.getElementById('publish-story-btn').addEventListener('click', publishStory);
+
+            // Emoji Selection
+            document.querySelectorAll('#emoji-selector .emoji-option').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('#emoji-selector .emoji-option').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedPostEmoji = this.dataset.emoji;
+                });
+            });
+
+            document.querySelectorAll('[data-story-emoji]').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('[data-story-emoji]').forEach(b => b.classList.remove('selected'));
+                    this.classList.add('selected');
+                    selectedStoryEmoji = this.dataset.storyEmoji;
+                });
+            });
+
+            // Close modals on overlay click
+            document.querySelectorAll('.modal-overlay').forEach(overlay => {
+                overlay.addEventListener('click', (e) => {
+                    if (e.target === overlay) {
+                        overlay.classList.remove('show');
+                    }
+                });
+            });
+
+            // Group modal
+            document.getElementById('create-group-btn').addEventListener('click', () => openModal('create-group-modal'));
+            document.getElementById('close-group-modal').addEventListener('click', () => closeModal('create-group-modal'));
+            document.getElementById('cancel-group-btn').addEventListener('click', () => closeModal('create-group-modal'));
+            document.getElementById('create-group-submit').addEventListener('click', createGroup);
+
+            // Listing modal
+            document.getElementById('create-listing-btn').addEventListener('click', () => openModal('create-listing-modal'));
+            document.getElementById('close-listing-modal').addEventListener('click', () => closeModal('create-listing-modal'));
+            document.getElementById('cancel-listing-btn').addEventListener('click', () => closeModal('create-listing-modal'));
+            document.getElementById('create-listing-submit').addEventListener('click', createListing);
+
+            // Event modal
+            document.getElementById('create-event-btn').addEventListener('click', () => openModal('create-event-modal'));
+            document.getElementById('close-event-modal').addEventListener('click', () => closeModal('create-event-modal'));
+            document.getElementById('cancel-event-btn').addEventListener('click', () => closeModal('create-event-modal'));
+            document.getElementById('create-event-submit').addEventListener('click', createEvent);
+
+            // Logout
+            document.getElementById('logout-btn').addEventListener('click', () => {
+                currentUser = null;
+                document.getElementById('main-app').classList.add('hidden');
+                document.getElementById('login-screen').classList.remove('hidden');
+                document.getElementById('username-input').value = '';
+            });
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const username = document.getElementById('username-input').value.trim();
+            if (username.length >= 3) {
+                currentUser = username;
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+                document.getElementById('user-avatar-text').textContent = username[0].toUpperCase();
+                document.getElementById('create-post-avatar').textContent = username[0].toUpperCase();
+                document.getElementById('profile-avatar').textContent = username[0].toUpperCase();
+                document.getElementById('profile-username').textContent = username;
+                renderCurrentView();
+            }
+        }
+
+        function switchView(view) {
+            currentView = view;
+            
+            // Update navigation
+            document.querySelectorAll('.nav-icon, .nav-link').forEach(item => {
+                item.classList.remove('active');
+            });
+            document.querySelectorAll(`[data-view="${view}"]`).forEach(item => {
+                item.classList.add('active');
+            });
+
+            // Hide all views
+            document.querySelectorAll('#home-view, #friends-view, #profile-view, #messenger-view, #notifications-view, #groups-view, #marketplace-view, #watch-view, #events-view, #saved-view, #settings-view').forEach(v => {
+                v.classList.add('hidden');
+            });
+
+            // Show current view
+            const viewMap = {
+                'home': 'home-view',
+                'friends': 'friends-view',
+                'profile': 'profile-view',
+                'messenger': 'messenger-view',
+                'notifications': 'notifications-view',
+                'groups': 'groups-view',
+                'marketplace': 'marketplace-view',
+                'watch': 'watch-view',
+                'events': 'events-view',
+                'saved': 'saved-view',
+                'settings': 'settings-view'
+            };
+
+            const viewId = viewMap[view];
+            if (viewId) {
+                document.getElementById(viewId).classList.remove('hidden');
+            }
+
+            renderCurrentView();
+        }
+
+        function renderCurrentView() {
+            if (!currentUser) return;
+
+            if (currentView === 'home') {
+                renderFeed();
+                renderStories();
+                renderContacts();
+            } else if (currentView === 'profile') {
+                renderProfile();
+            } else if (currentView === 'friends') {
+                renderFriendsList();
+            } else if (currentView === 'notifications') {
+                renderNotifications();
+            } else if (currentView === 'groups') {
+                renderGroups();
+            } else if (currentView === 'marketplace') {
+                renderMarketplace();
+            } else if (currentView === 'watch') {
+                renderWatch();
+            } else if (currentView === 'events') {
+                renderEvents();
+            } else if (currentView === 'saved') {
+                renderSaved();
+            } else if (currentView === 'settings') {
+                renderSettings();
+            }
+        }
+
+        function renderFeed() {
+            const container = document.getElementById('feed-container');
+            const posts = allData
+                .filter(d => d.type === 'post')
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            if (posts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📝</div>
+                        <div class="empty-state-text">No posts yet</div>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #65676b;">Be the first to share something!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = '';
+            posts.forEach(post => {
+                const postEl = createPostElement(post);
+                container.appendChild(postEl);
+            });
+        }
+
+        function createPostElement(post) {
+            const div = document.createElement('div');
+            div.className = 'post-card';
+            div.dataset.postId = post.__backendId;
+
+            const comments = allData.filter(d => d.type === 'comment' && d.parent_id === post.__backendId);
+            const reactionsData = post.reactions ? JSON.parse(post.reactions) : {};
+            const totalReactions = Object.values(reactionsData).reduce((sum, users) => sum + users.length, 0);
+            const userReaction = Object.keys(reactionsData).find(type => reactionsData[type].includes(currentUser));
+            
+            const topReactions = Object.entries(reactionsData)
+                .sort((a, b) => b[1].length - a[1].length)
+                .slice(0, 3);
+
+            const feelingText = post.feeling ? ` is feeling ${post.feeling}` : '';
+            const locationText = post.location_tag ? ` at ${post.location_tag}` : '';
+
+            div.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar">${post.username[0].toUpperCase()}</div>
+                    <div class="post-info">
+                        <div class="post-username">
+                            ${post.username}
+                            ${feelingText || locationText ? `<span class="post-feeling">${feelingText}${locationText}</span>` : ''}
+                        </div>
+                        <div class="post-meta">
+                            <span>${formatTime(post.timestamp)}</span>
+                            <span> • </span>
+                            <span>${post.visibility === 'public' ? '🌍' : post.visibility === 'friends' ? '👥' : '🔒'}</span>
+                        </div>
+                    </div>
+                    <div class="post-more">⋯</div>
+                </div>
+                <div class="post-content">${formatContent(post.content)}</div>
+                ${post.media_content ? `<div class="post-media"><div class="post-emoji-media">${post.media_content}</div></div>` : ''}
+                ${totalReactions > 0 || comments.length > 0 || post.shares_count > 0 ? `
+                <div class="post-stats">
+                    <div class="post-reactions">
+                        ${topReactions.length > 0 ? `
+                            <div class="reaction-icons">
+                                ${topReactions.map(([type]) => `<span class="reaction-icon">${REACTION_TYPES[type]}</span>`).join('')}
+                            </div>
+                        ` : ''}
+                        <span>${totalReactions}</span>
+                    </div>
+                    <div class="post-counts">
+                        ${comments.length > 0 ? `<span>${comments.length} ${comments.length === 1 ? 'comment' : 'comments'}</span>` : ''}
+                        ${post.shares_count > 0 ? `<span>${post.shares_count} ${post.shares_count === 1 ? 'share' : 'shares'}</span>` : ''}
+                    </div>
+                </div>
+                ` : ''}
+                <div class="post-actions" style="position: relative;">
+                    <div class="post-action ${userReaction ? 'reacted' : ''}" data-action="react">
+                        <span>${userReaction ? REACTION_TYPES[userReaction] : '👍'}</span>
+                        <span>${userReaction ? userReaction.charAt(0).toUpperCase() + userReaction.slice(1) : 'Like'}</span>
+                    </div>
+                    <div class="post-action" data-action="comment">
+                        <span>💬</span>
+                        <span>Comment</span>
+                    </div>
+                    <div class="post-action" data-action="share">
+                        <span>📤</span>
+                        <span>Share</span>
+                    </div>
+                    <div class="reaction-picker">
+                        ${Object.entries(REACTION_TYPES).map(([type, emoji]) => 
+                            `<span class="reaction-btn" data-reaction="${type}">${emoji}</span>`
+                        ).join('')}
+                    </div>
+                </div>
+                ${comments.length > 0 ? `
+                <div class="comments-section">
+                    ${comments.map(c => createCommentHTML(c)).join('')}
+                </div>
+                ` : ''}
+                <div class="comment-input-area">
+                    <div class="comment-avatar">${currentUser[0].toUpperCase()}</div>
+                    <input type="text" class="comment-input" placeholder="Write a comment..." data-post-id="${post.__backendId}">
+                </div>
+            `;
+
+            // Reaction picker
+            const reactAction = div.querySelector('[data-action="react"]');
+            const reactionPicker = div.querySelector('.reaction-picker');
+            let reactionTimeout;
+
+            reactAction.addEventListener('mouseenter', () => {
+                clearTimeout(reactionTimeout);
+                reactionPicker.classList.add('show');
+            });
+
+            reactAction.addEventListener('mouseleave', () => {
+                reactionTimeout = setTimeout(() => {
+                    reactionPicker.classList.remove('show');
+                }, 500);
+            });
+
+            reactionPicker.addEventListener('mouseenter', () => {
+                clearTimeout(reactionTimeout);
+            });
+
+            reactionPicker.addEventListener('mouseleave', () => {
+                reactionPicker.classList.remove('show');
+            });
+
+            div.querySelectorAll('.reaction-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    addReaction(post, btn.dataset.reaction);
+                    reactionPicker.classList.remove('show');
+                });
+            });
+
+            reactAction.addEventListener('click', () => {
+                if (userReaction) {
+                    removeReaction(post, userReaction);
+                } else {
+                    addReaction(post, 'like');
+                }
+            });
+
+            div.querySelector('[data-action="comment"]').addEventListener('click', () => {
+                div.querySelector('.comment-input').focus();
+            });
+
+            div.querySelector('[data-action="share"]').addEventListener('click', () => {
+                sharePost(post);
+            });
+
+            div.querySelector('.comment-input').addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    addComment(post.__backendId, e.target);
+                }
+            });
+
+            return div;
+        }
+
+        function createCommentHTML(comment) {
+            return `
+                <div class="comment">
+                    <div class="comment-avatar">${comment.username[0].toUpperCase()}</div>
+                    <div class="comment-content">
+                        <div class="comment-bubble">
+                            <div class="comment-username">${comment.username}</div>
+                            <div class="comment-text">${formatContent(comment.content)}</div>
+                        </div>
+                        <div class="comment-actions">
+                            <span class="comment-action">Like</span>
+                            <span class="comment-action">Reply</span>
+                            <span>${formatTime(comment.timestamp)}</span>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        async function addReaction(post, reactionType) {
+            const reactionsData = post.reactions ? JSON.parse(post.reactions) : {};
+            
+            // Remove existing reaction
+            Object.keys(reactionsData).forEach(type => {
+                reactionsData[type] = reactionsData[type].filter(user => user !== currentUser);
+            });
+
+            // Add new reaction
+            if (!reactionsData[reactionType]) reactionsData[reactionType] = [];
+            reactionsData[reactionType].push(currentUser);
+
+            post.reactions = JSON.stringify(reactionsData);
+            await window.dataSdk.update(post);
+        }
+
+        async function removeReaction(post, reactionType) {
+            const reactionsData = JSON.parse(post.reactions);
+            reactionsData[reactionType] = reactionsData[reactionType].filter(user => user !== currentUser);
+            post.reactions = JSON.stringify(reactionsData);
+            await window.dataSdk.update(post);
+        }
+
+        async function addComment(postId, inputEl) {
+            const content = inputEl.value.trim();
+            if (!content) return;
+
+            if (allData.length >= 999) {
+                showToast('❌', 'Comment limit reached (999 items)');
+                return;
+            }
+
+            inputEl.disabled = true;
+
+            const comment = {
+                id: Date.now().toString(),
+                type: 'comment',
+                parent_id: postId,
+                user_id: currentUser,
+                username: currentUser,
+                content: content,
+                timestamp: new Date().toISOString()
+            };
+
+            const result = await window.dataSdk.create(comment);
+            inputEl.disabled = false;
+
+            if (result.isOk) {
+                inputEl.value = '';
+            } else {
+                showToast('❌', 'Error adding comment');
+            }
+        }
+
+        async function sharePost(post) {
+            if (allData.length >= 999) {
+                showToast('❌', 'Share limit reached (999 items)');
+                return;
+            }
+
+            const sharedPost = {
+                id: Date.now().toString(),
+                type: 'post',
+                user_id: currentUser,
+                username: currentUser,
+                content: `Shared ${post.username}'s post:\n\n${post.content}`,
+                media_content: post.media_content || '',
+                visibility: 'public',
+                feeling: '',
+                location_tag: '',
+                likes: 0,
+                reactions: '{}',
+                comments_count: 0,
+                shares_count: 0,
+                is_shared: true,
+                original_post_id: post.__backendId,
+                timestamp: new Date().toISOString()
+            };
+
+            const result = await window.dataSdk.create(sharedPost);
+            
+            if (result.isOk) {
+                post.shares_count = (post.shares_count || 0) + 1;
+                await window.dataSdk.update(post);
+                showToast('✅', 'Post shared successfully!');
+            } else {
+                showToast('❌', 'Error sharing post');
+            }
+        }
+
+        async function publishPost() {
+            const content = document.getElementById('post-content').value.trim();
+            if (!content) return;
+
+            if (allData.length >= 999) {
+                showToast('❌', 'Post limit reached (999 items)');
+                return;
+            }
+
+            const btn = document.getElementById('publish-post-btn');
+            btn.disabled = true;
+            btn.textContent = 'Publishing...';
+
+            const feeling = document.getElementById('feeling-select').value;
+            const visibility = document.getElementById('visibility-select').value;
+
+            const post = {
+                id: Date.now().toString(),
+                type: 'post',
+                user_id: currentUser,
+                username: currentUser,
+                content: content,
+                media_content: selectedPostEmoji || '',
+                visibility: visibility,
+                feeling: feeling,
+                location_tag: '',
+                likes: 0,
+                reactions: '{}',
+                comments_count: 0,
+                shares_count: 0,
+                timestamp: new Date().toISOString()
+            };
+
+            const result = await window.dataSdk.create(post);
+
+            btn.disabled = false;
+            btn.textContent = 'Post';
+
+            if (result.isOk) {
+                closeModal('create-post-modal');
+                document.getElementById('post-content').value = '';
+                document.getElementById('feeling-select').value = '';
+                document.getElementById('visibility-select').value = 'public';
+                selectedPostEmoji = null;
+                document.querySelectorAll('#emoji-selector .emoji-option').forEach(b => b.classList.remove('selected'));
+                showToast('✅', 'Post published successfully!');
+            } else {
+                showToast('❌', 'Error publishing post');
+            }
+        }
+
+        async function publishStory() {
+            const content = document.getElementById('story-content').value.trim();
+            if (!content && !selectedStoryEmoji) return;
+
+            if (allData.length >= 999) {
+                showToast('❌', 'Story limit reached (999 items)');
+                return;
+            }
+
+            const btn = document.getElementById('publish-story-btn');
+            btn.disabled = true;
+            btn.textContent = 'Sharing...';
+
+            const expiresAt = new Date();
+            expiresAt.setHours(expiresAt.getHours() + 24);
+
+            const story = {
+                id: Date.now().toString(),
+                type: 'story',
+                user_id: currentUser,
+                username: currentUser,
+                content: content,
+                media_content: selectedStoryEmoji || '🌟',
+                story_expires: expiresAt.toISOString(),
+                timestamp: new Date().toISOString()
+            };
+
+            const result = await window.dataSdk.create(story);
+
+            btn.disabled = false;
+            btn.textContent = 'Share Story';
+
+            if (result.isOk) {
+                closeModal('create-story-modal');
+                document.getElementById('story-content').value = '';
+                selectedStoryEmoji = null;
+                document.querySelectorAll('[data-story-emoji]').forEach(b => b.classList.remove('selected'));
+                showToast('✅', 'Story shared successfully!');
+            } else {
+                showToast('❌', 'Error sharing story');
+            }
+        }
+
+        async function createGroup() {
+            const name = document.getElementById('group-name-input').value.trim();
+            const description = document.getElementById('group-desc-input').value.trim();
+            const privacy = document.getElementById('group-privacy').value;
+
+            if (!name) {
+                showToast('❌', 'Please enter a group name');
+                return;
+            }
+
+            if (allData.length >= 999) {
+                showToast('❌', 'Group limit reached (999 items)');
+                return;
+            }
+
+            const btn = document.getElementById('create-group-submit');
+            btn.disabled = true;
+            btn.textContent = 'Creating...';
+
+            const group = {
+                id: Date.now().toString(),
+                type: 'group',
+                user_id: currentUser,
+                username: currentUser,
+                group_name: name,
+                content: description,
+                visibility: privacy,
+                timestamp: new Date().toISOString()
+            };
+
+            const result = await window.dataSdk.create(group);
+
+            btn.disabled = false;
+            btn.textContent = 'Create';
+
+            if (result.isOk) {
+                closeModal('create-group-modal');
+                document.getElementById('group-name-input').value = '';
+                document.getElementById('group-desc-input').value = '';
+                document.getElementById('group-privacy').value = 'public';
+                showToast('✅', 'Group created successfully!');
+                switchView('groups');
+            } else {
+                showToast('❌', 'Error creating group');
+            }
+        }
+
+        async function createListing() {
+            const title = document.getElementById('listing-title-input').value.trim();
+            const price = document.getElementById('listing-price-input').value;
+            const description = document.getElementById('listing-desc-input').value.trim();
+            const location = document.getElementById('listing-location-input').value.trim();
+            const category = document.getElementById('listing-category').value;
+
+            if (!title || !price) {
+                showToast('❌', 'Please fill in required fields');
+                return;
+            }
+
+            if (allData.length >= 999) {
+                showToast('❌', 'Listing limit reached (999 items)');
+                return;
+            }
+
+            const btn = document.getElementById('create-listing-submit');
+            btn.disabled = true;
+            btn.textContent = 'Creating...';
+
+            const listing = {
+                id: Date.now().toString(),
+                type: 'listing',
+                user_id: currentUser,
+                username: title,
+                content: category,
+                likes: parseFloat(price),
+                location_tag: location,
+                feeling: description,
+                timestamp: new Date().toISOString()
+            };
+
+            const result = await window.dataSdk.create(listing);
+
+            btn.disabled = false;
+            btn.textContent = 'List Item';
+
+            if (result.isOk) {
+                closeModal('create-listing-modal');
+                document.getElementById('listing-title-input').value = '';
+                document.getElementById('listing-price-input').value = '';
+                document.getElementById('listing-desc-input').value = '';
+                document.getElementById('listing-location-input').value = '';
+                document.getElementById('listing-category').value = 'electronics';
+                showToast('✅', 'Listing created successfully!');
+                switchView('marketplace');
+            } else {
+                showToast('❌', 'Error creating listing');
+            }
+        }
+
+        async function createEvent() {
+            const title = document.getElementById('event-title-input').value.trim();
+            const date = document.getElementById('event-date-input').value;
+            const time = document.getElementById('event-time-input').value;
+            const location = document.getElementById('event-location-input').value.trim();
+            const description = document.getElementById('event-desc-input').value.trim();
+
+            if (!title || !date || !time) {
+                showToast('❌', 'Please fill in required fields');
+                return;
+            }
+
+            if (allData.length >= 999) {
+                showToast('❌', 'Event limit reached (999 items)');
+                return;
+            }
+
+            const btn = document.getElementById('create-event-submit');
+            btn.disabled = true;
+            btn.textContent = 'Creating...';
+
+            const event = {
+                id: Date.now().toString(),
+                type: 'event',
+                user_id: currentUser,
+                username: currentUser,
+                content: title,
+                event_date: date,
+                event_location: location,
+                feeling: description,
+                timestamp: new Date().toISOString()
+            };
+
+            const result = await window.dataSdk.create(event);
+
+            btn.disabled = false;
+            btn.textContent = 'Create Event';
+
+            if (result.isOk) {
+                closeModal('create-event-modal');
+                document.getElementById('event-title-input').value = '';
+                document.getElementById('event-date-input').value = '';
+                document.getElementById('event-time-input').value = '';
+                document.getElementById('event-location-input').value = '';
+                document.getElementById('event-desc-input').value = '';
+                showToast('✅', 'Event created successfully!');
+                switchView('events');
+            } else {
+                showToast('❌', 'Error creating event');
+            }
+        }
+
+        function renderStories() {
+            const container = document.getElementById('stories-container');
+            const createStoryBtn = document.getElementById('create-story-btn');
+            
+            const stories = allData
+                .filter(d => d.type === 'story' && new Date(d.story_expires) > new Date())
+                .sort((a, b) => new Date(b.timestamp) - new Date(a.timestamp));
+
+            // Keep create button
+            container.innerHTML = '';
+            container.appendChild(createStoryBtn);
+
+            stories.forEach(story => {
+                const storyCard = document.createElement('div');
+                storyCard.className = 'story-card';
+                storyCard.style.background = `linear-gradient(135deg, rgba(0,0,0,0.3), rgba(0,0,0,0.5)), center/cover`;
+                storyCard.innerHTML = `
+                    <div class="story-avatar">${story.username[0].toUpperCase()}</div>
+                    <div class="story-username">${story.username}</div>
+                `;
+                container.appendChild(storyCard);
+            });
+        }
+
+        function renderContacts() {
+            const container = document.getElementById('contacts-list');
+            const users = [...new Set(allData
+                .filter(d => d.type === 'post')
+                .map(d => d.username)
+                .filter(u => u !== currentUser)
+            )].slice(0, 10);
+
+            if (users.length === 0) {
+                container.innerHTML = '<div style="color: #65676b; font-size: 0.875rem; text-align: center; padding: 2rem 0;">No contacts yet</div>';
+                return;
+            }
+
+            container.innerHTML = users.map(user => `
+                <div class="friend-item">
+                    <div class="friend-avatar">
+                        ${user[0].toUpperCase()}
+                        <div class="online-dot"></div>
+                    </div>
+                    <div class="friend-info">
+                        <div class="friend-name">${user}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderProfile() {
+            const userPosts = allData.filter(d => d.type === 'post' && d.user_id === currentUser);
+            const userStories = allData.filter(d => d.type === 'story' && d.user_id === currentUser);
+            const friends = [...new Set(allData
+                .filter(d => d.type === 'post' && d.user_id !== currentUser)
+                .map(d => d.username)
+            )];
+
+            document.getElementById('profile-posts-count').textContent = userPosts.length;
+            document.getElementById('profile-friends-count').textContent = friends.length;
+            document.getElementById('profile-stories-count').textContent = userStories.length;
+        }
+
+        function renderFriendsList() {
+            const container = document.getElementById('friends-list');
+            const users = [...new Set(allData
+                .filter(d => d.type === 'post')
+                .map(d => d.username)
+                .filter(u => u !== currentUser)
+            )];
+
+            if (users.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👥</div>
+                        <div class="empty-state-text">No friends yet</div>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #65676b;">Start connecting with people!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = users.map(user => `
+                <div class="friend-item">
+                    <div class="friend-avatar">
+                        ${user[0].toUpperCase()}
+                        <div class="online-dot"></div>
+                    </div>
+                    <div class="friend-info">
+                        <div class="friend-name">${user}</div>
+                        <div class="friend-status">Active now</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderNotifications() {
+            const container = document.getElementById('notifications-list');
+            container.innerHTML = `
+                <div class="empty-state">
+                    <div class="empty-state-icon">🔔</div>
+                    <div class="empty-state-text">No notifications</div>
+                    <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #65676b;">You're all caught up!</p>
+                </div>
+            `;
+        }
+
+        function updateNotificationBadges() {
+            // This would track real notifications in a full implementation
+            const badges = {
+                'friend-requests-badge': 0,
+                'messages-badge': 0,
+                'notifications-badge': 0
+            };
+
+            Object.entries(badges).forEach(([id, count]) => {
+                const badge = document.getElementById(id);
+                if (count > 0) {
+                    badge.textContent = count;
+                    badge.classList.remove('hidden');
+                } else {
+                    badge.classList.add('hidden');
+                }
+            });
+        }
+
+        function renderGroups() {
+            const container = document.getElementById('groups-list');
+            const groups = allData.filter(d => d.type === 'group');
+
+            if (groups.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">👨‍👩‍👧‍👦</div>
+                        <div class="empty-state-text">No groups yet</div>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #65676b;">Create or join groups to connect with people</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = groups.map(group => `
+                <div class="group-card">
+                    <div class="group-icon">${group.group_name ? group.group_name[0].toUpperCase() : '👥'}</div>
+                    <div class="group-info">
+                        <div class="group-name">${group.group_name}</div>
+                        <div class="group-members">${group.visibility === 'public' ? '🌍 Public group' : '🔒 Private group'}</div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderMarketplace() {
+            const container = document.getElementById('marketplace-list');
+            const listings = allData.filter(d => d.type === 'listing');
+
+            if (listings.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🏪</div>
+                        <div class="empty-state-text">No listings yet</div>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #65676b;">Be the first to list an item!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = listings.map(listing => {
+                const categoryEmojis = {
+                    electronics: '📱',
+                    furniture: '🛋️',
+                    clothing: '👕',
+                    vehicles: '🚗',
+                    other: '📦'
+                };
+                
+                return `
+                    <div class="listing-card">
+                        <div class="listing-image">${categoryEmojis[listing.content] || '📦'}</div>
+                        <div class="listing-info">
+                            <div class="listing-title">${listing.username}</div>
+                            <div class="listing-price">$${parseFloat(listing.likes || 0).toFixed(2)}</div>
+                            <div class="listing-location">📍 ${listing.location_tag || 'Location not specified'}</div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderWatch() {
+            const container = document.getElementById('watch-list');
+            const videos = allData.filter(d => d.type === 'video');
+
+            if (videos.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📺</div>
+                        <div class="empty-state-text">No videos yet</div>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #65676b;">Video content will appear here</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = videos.map(video => `
+                <div class="video-card">
+                    <div class="video-thumbnail">
+                        ${video.media_content || '🎬'}
+                        <div class="play-overlay">▶</div>
+                    </div>
+                    <div class="video-info">
+                        <div class="video-title">${video.content}</div>
+                        <div class="video-meta">
+                            <span>${video.username}</span>
+                            <span>•</span>
+                            <span>${formatTime(video.timestamp)}</span>
+                            <span>•</span>
+                            <span>${video.likes || 0} views</span>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function renderEvents() {
+            const container = document.getElementById('events-list');
+            const events = allData.filter(d => d.type === 'event')
+                .sort((a, b) => new Date(a.event_date) - new Date(b.event_date));
+
+            if (events.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">📅</div>
+                        <div class="empty-state-text">No events yet</div>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #65676b;">Create an event to get started!</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = events.map(event => {
+                const eventDate = new Date(event.event_date);
+                const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+                
+                return `
+                    <div class="event-card">
+                        <div class="event-date">
+                            <div class="event-month">${months[eventDate.getMonth()]}</div>
+                            <div class="event-day">${eventDate.getDate()}</div>
+                        </div>
+                        <div class="event-details">
+                            <div class="event-title">${event.content}</div>
+                            <div class="event-info">
+                                <span>📍 ${event.event_location || 'Location TBD'}</span>
+                                <span>👤 Created by ${event.username}</span>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function renderSaved() {
+            const container = document.getElementById('saved-list');
+            const savedPosts = allData.filter(d => d.type === 'saved');
+
+            if (savedPosts.length === 0) {
+                container.innerHTML = `
+                    <div class="empty-state">
+                        <div class="empty-state-icon">🔖</div>
+                        <div class="empty-state-text">No saved posts</div>
+                        <p style="margin-top: 0.5rem; font-size: 0.875rem; color: #65676b;">Save posts to view them later</p>
+                    </div>
+                `;
+                return;
+            }
+
+            container.innerHTML = savedPosts.map(post => `
+                <div class="post-card">
+                    <div class="post-header">
+                        <div class="post-avatar">${post.username[0].toUpperCase()}</div>
+                        <div class="post-info">
+                            <div class="post-username">${post.username}</div>
+                            <div class="post-meta">${formatTime(post.timestamp)}</div>
+                        </div>
+                    </div>
+                    <div class="post-content">${formatContent(post.content)}</div>
+                </div>
+            `).join('');
+        }
+
+        function renderSettings() {
+            const settingsUsername = document.getElementById('settings-username');
+            if (settingsUsername) {
+                settingsUsername.textContent = currentUser;
+            }
+        }
+
+        function formatContent(text) {
+            return text
+                .replace(/#(\w+)/g, '<span class="hashtag">#$1</span>')
+                .replace(/@(\w+)/g, '<span class="mention">@$1</span>');
+        }
+
+        function formatTime(timestamp) {
+            const date = new Date(timestamp);
+            const now = new Date();
+            const diff = now - date;
+            const minutes = Math.floor(diff / 60000);
+            const hours = Math.floor(diff / 3600000);
+            const days = Math.floor(diff / 86400000);
+
+            if (minutes < 1) return 'Just now';
+            if (minutes < 60) return `${minutes}m`;
+            if (hours < 24) return `${hours}h`;
+            if (days < 7) return `${days}d`;
+            return date.toLocaleDateString();
+        }
+
+        function openModal(modalId) {
+            document.getElementById(modalId).classList.add('show');
+        }
+
+        function closeModal(modalId) {
+            document.getElementById(modalId).classList.remove('show');
+        }
+
+        function showToast(icon, message) {
+            const toast = document.createElement('div');
+            toast.className = 'toast';
+            toast.innerHTML = `
+                <span class="toast-icon">${icon}</span>
+                <span class="toast-message">${message}</span>
+            `;
+            document.body.appendChild(toast);
+            setTimeout(() => toast.remove(), 3000);
+        }
+
+        initializeApp();
+    </script>
+ <script>(function(){function c(){var b=a.contentDocument||a.contentWindow.document;if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'9b9ccdcbe7271b5a',t:'MTc2NzcxOTE2NS4wMDAwMDA='};var a=document.createElement('script');a.nonce='';a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
+</html>
