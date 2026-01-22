@@ -2,12 +2,12 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { Mail, Lock } from 'lucide-react';
-import { useAppDispatch } from '@/store/hooks';
-import { login } from '@/store/slices/authSlice';
-import { Input } from '@/Components/ui/Input';
-import { Button } from '@/Components/ui/Button';
+import  useRouter  from 'next/navigation';
+import  Mail, Lock  from 'lucide-react';
+import useAppDispatch  from '@/store/hooks';
+import  login  from '@/store/slices/authSlice';
+import  Input  from '@/Components/ui/Input';
+import  Button  from '@/Components/ui/Button';
 import toast from 'react-hot-toast';
 
 export default function LoginPage() {
