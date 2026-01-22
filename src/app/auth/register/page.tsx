@@ -6,8 +6,8 @@ import { useRouter } from 'next/navigation';
 import { User, Mail, Lock, Calendar } from 'lucide-react';
 import { useAppDispatch } from '@/store/hooks';
 import { register } from '@/store/slices/authSlice';
-import { Input } from '@/components/ui/Input';
-import { Button } from '@/components/ui/Button';
+import { Input } from '@/Components/ui/Input';
+import { Button } from '@/Components/ui/Button';
 import toast from 'react-hot-toast';
 
 export default function RegisterPage() {
